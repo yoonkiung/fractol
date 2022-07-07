@@ -92,7 +92,7 @@ int	main(int ac, char **av)
 {
 	t_mlx	mlx;
 	int		flag;
-	if (ac != 2 || (ft_strncmp(av[1], "mandelbort", 13) != 0 \
+	if (ac != 2 && (ft_strncmp(av[1], "mandelbort", 13) != 0 \
 	|| ft_strncmp(av[1], "julia", 13) != 0))
 	{
 		ft_putstr_fd("wrong input\n \
