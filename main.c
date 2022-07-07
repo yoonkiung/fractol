@@ -80,36 +80,46 @@ void	put_pixel(t_img *img, int flag)
 		}
 	}
 }
-#include <stdio.h>
-int	mouse_pos(int x,int y)
-{
 
-	printf("Mouse moving in Win, at %dx%d.\n",x,y);
+// int		mlx_zoom(int button, int x, int y, t_mlx *mlx)
+// {
+
+// }
+
+int	setting(int ac, char **av, t_mlx *mlx)
+{
+	if (ac == 2 && ft_strncmp(av[1], "mandelbort", 13) == 0)
+	{
+		mlx->flag = 0;
+		return (1);
+	}
+	if (ac == 3 && ft_strncmp(av[1], "julia", 13) == 0)
+	{
+		mlx->flag = 1;
+		return (1);
+	}
 	return (0);
 }
 
 int	main(int ac, char **av)
 {
 	t_mlx	mlx;
-	int		flag;
-	if (ac != 2 && (ft_strncmp(av[1], "mandelbort", 13) != 0 \
-	|| ft_strncmp(av[1], "julia", 13) != 0))
+
+	if (!setting(ac, av, &mlx))
 	{
-		ft_putstr_fd("wrong input\n \
-		correct form is './fractol mandelbort' or'./fractol julia'\n", 1);
+		ft_putstr_fd("wrong input correct form is ", 1);
+		ft_putstr_fd("'./fractol mandelbort' or ", 1);
+		ft_putstr_fd("'./fractol julia 1' or ", 1);
+		ft_putstr_fd("'./fractol julia -1'\n", 1);
 		return (0);
 	}
-	if (ft_strncmp(av[1], "mandelbort", 13) == 0)
-		flag = 0;
-	else
-		flag = 1;
 	if (!window_init(&mlx))
 		return (0);
-	put_pixel(&mlx.img, flag);
+	put_pixel(&mlx.img, mlx.flag);
 	mlx_put_image_to_window(mlx.mlx_ptr, mlx.win, mlx.img.img_ptr, 0, 0);
 	mlx_hook(mlx.win, X_EVENT_KEY_PRESS, 0, key_press, 0);
 	mlx_hook(mlx.win, X_EVENT_KEY_EXIT, 0, close, 0);
-	mlx_hook(mlx.win, X_EVENT_MOUSE_MOTION, 0, &mouse_pos, 0);
+	// mlx_mouse_hook(mlx.win, mlx_zoom, &mlx);
 	mlx_loop(mlx.mlx_ptr);
 	return (0);
 }
